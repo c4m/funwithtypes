@@ -56,6 +56,7 @@ class HListSpec extends FlatSpec with ShouldMatchers {
     implicit val caseLong = new Case[F1, Long, String]
 
 
+    map[HNil, F1, HNil]
     map[HL, F1, Long::Int::String::HNil]
 
   }
@@ -63,6 +64,9 @@ class HListSpec extends FlatSpec with ShouldMatchers {
   "HList" should "prepend" in {
     def prepend[HLA <: HList, HLB <: HList, HLC <: HList](implicit prepend: Prepend.Aux[HLA, HLB, HLC]): Unit = ()
 
+    prepend[HNil, HNil, HNil]
+    prepend[HNil, HL, HL]
+    prepend[HL, HNil, HL]
     prepend[HL, Int::Long::HNil, String::Int::Long::Int::Long::HNil]
   }
 
@@ -74,6 +78,7 @@ class HListSpec extends FlatSpec with ShouldMatchers {
 
     implicit def caseDefault[A] = new Case[F1, A, A::A::HNil]
 
+    flatMap[HNil, F1, HNil]
     flatMap[HL, F1, String::String::Int::Int::Long::Long::HNil]
 
   }

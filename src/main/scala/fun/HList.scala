@@ -57,7 +57,7 @@ object Mapper {
 
   type Aux[HL <: HList, F, MHL <: HList] = Mapper[HL, F] { type R = MHL }
 
-  implicit def map1[F, H, RR](implicit caseM: Case[F, H, RR]) = new Mapper[H::HNil, F] { type R = RR::HNil }
+  implicit def map1[F] = new Mapper[HNil, F] { type R = HNil }
 
   implicit def map2[H, T <: HList, F, RR](implicit caseM: Case[F, H, RR], mapper: Mapper[T, F]) = new Mapper[H::T, F] { type R = RR::mapper.R}
 
@@ -69,7 +69,7 @@ object Prepend {
 
   type Aux[HLA<: HList, HLB <: HList, C <: HList] = Prepend[HLA, HLB] { type R = C }
 
-  implicit def prepend1[HA, HLA <: HList] = new Prepend[HA :: HNil, HLA] { type R = HA :: HLA }
+  implicit def prepend1[HL <: HList] = new Prepend[HNil, HL] { type R = HL }
 
   implicit def prepend2[HA, TA <: HList, HLA <: HList, C <: HList](implicit prepend: Prepend.Aux[TA, HLA, C]) = new Prepend[HA :: TA, HLA] { type R = HA :: C }
 
@@ -81,7 +81,7 @@ object FlatMapper {
 
   type Aux[HL <: HList, F, MHL <: HList] = FlatMapper[HL, F] { type R = MHL }
 
-  implicit def flatMap1[F, H, RR <: HList](implicit caseFM: Case[F, H, RR]) = new FlatMapper[H::HNil, F] { type R = RR }
+  implicit def flatMap1[F] = new FlatMapper[HNil, F] { type R = HNil }
 
   implicit def flatMap2[F, H, T <: HList, RR <: HList, RRR <: HList, RRRR <: HList](implicit caseFM: Case[F, H, RR], flatMapper: FlatMapper.Aux[T, F, RRR], prepend: Prepend.Aux[RR, RRR, RRRR]) = new FlatMapper[H::T, F] { type R = RRRR }
 
